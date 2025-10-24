@@ -1,6 +1,6 @@
 import Dimension from '../../models/dimension';
 
-const G = 0.006;
+const G = 10.006;
 const AGING: number = 0.2137;
 const BOUNDS_OFFSET: number = 5;
 const MAX_AGE_PULL: number = 100;
@@ -86,5 +86,20 @@ export default class Particle {
       (!ySign && this.speed.y > -MAX_SPEED)
     )
       this.speed.y = this.speed.y + ySign * vInc;
+  }
+}
+
+export class MouseParticle extends Particle {
+  constructor(bounds: Dimension) {
+    super(bounds);
+
+    this.speed = {
+      x: 0,
+      y: 0,
+    };
+
+    this.age = 100;
+    this.maxAge = Infinity;
+    this.reachedMaxAge = false;
   }
 }

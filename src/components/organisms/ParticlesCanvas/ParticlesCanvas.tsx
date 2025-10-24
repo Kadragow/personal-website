@@ -23,10 +23,7 @@ const ParticlesCanvas = (): React.ReactNode => {
         x: divContainer.clientWidth,
         y: divContainer.clientHeight,
       };
-      const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
-      if (context != null) {
-        setParticlesEngine(new PartclesEngine(context, bounds));
-      }
+      setParticlesEngine(new PartclesEngine(canvas, bounds));
     }
   }, [containerRef, canvasRef, particlesEngine]);
 

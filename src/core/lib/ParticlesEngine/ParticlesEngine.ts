@@ -3,21 +3,33 @@ import Particle from './Particle';
 import { hexToRgb } from '../helpers/colors';
 import { getCssVariable } from '../helpers/variable';
 
-const ANIMATION_INTERVAL = 50;
+const ANIMATION_INTERVAL = 5;
 const MAX_RANGE = 150;
 const PARTICLES_AMOUNT = 150;
 export default class PartclesEngine {
   private bounds: Dimension;
-  private context: CanvasRenderingContext2D;
+  private mousePos: Dimension | null = null;
+  private context: CanvasRenderingContext2D | null;
   public particles: Particle[] = [];
   public intervalAnimation!: NodeJS.Timeout;
 
-  constructor(context: CanvasRenderingContext2D, bounds: Dimension) {
-    this.context = context;
+  constructor(canvas: HTMLCanvasElement, bounds: Dimension) {
+    this.context = canvas.getContext('2d');
     this.bounds = bounds;
 
     this.spawnParticles();
+    this.handleMouse(canvas);
     this.animate();
+  }
+
+  private handleMouse(canvas: HTMLCanvasElement) {
+    window.onmousemove = (evt: MouseEvent) => {
+      var rect = canvas.getBoundingClientRect();
+      this.mousePos = {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top,
+      };
+    };
   }
 
   private spawnParticles(): void {
@@ -27,6 +39,7 @@ export default class PartclesEngine {
   }
 
   private drawParticle(p: Particle): void {
+    if (!this.context) return;
     const cssColor = getCssVariable('--text');
     const particleColor = hexToRgb(cssColor);
     this.context.strokeStyle = `rgba(${particleColor}, ${p.strength})`;
@@ -38,6 +51,7 @@ export default class PartclesEngine {
   }
 
   private drawLine(p1: Particle, p2: Particle): void {
+    if (!this.context) return;
     const maxDist = Math.min(this.bounds.x / 5, MAX_RANGE);
     const distance = Math.hypot(
       p2.position.x - p1.position.x,
@@ -65,6 +79,7 @@ export default class PartclesEngine {
   }
 
   private draw(): void {
+    if (!this.context) return;
     this.context.lineCap = 'round';
     this.context.clearRect(0, 0, this.bounds.x, this.bounds.y);
 
@@ -83,6 +98,16 @@ export default class PartclesEngine {
         this.drawLine(p1, p2);
       });
     });
+
+    if (!this.mousePos) return;
+    const cssColor = getCssVariable('--text');
+    const particleColor = hexToRgb(cssColor);
+    this.context.strokeStyle = `rgba(${particleColor}, 1)`;
+    this.context.lineWidth = 10;
+    this.context.beginPath();
+    this.context.moveTo(this.mousePos.x, this.mousePos.y);
+    this.context.lineTo(this.mousePos.x, this.mousePos.y);
+    this.context.stroke();
   }
 
   private animate(): void {

@@ -9,10 +9,10 @@ const Background = (): React.ReactNode => {
     <div className="background" id="background">
       <ParticlesCanvas />
 
-      <BorderH className="border border--top" />
-      <BorderV className="border border--right" />
-      <BorderH className="border border--bottom" />
-      <BorderV className="border border--left" />
+      <div className="border border--h border--top" />
+      <div className="border border--v border--right" />
+      <div className="border border--h border--bottom" />
+      <div className="border border--v border--left" />
     </div>
   );
 };

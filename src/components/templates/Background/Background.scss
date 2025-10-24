@@ -12,39 +12,64 @@
 }
 
 .border {
-  stroke: var(--secondary);
   position: absolute;
-  animation: expand var(--t-long) ease-in-out forwards;
+  background-color: var(--secondary);
+
+  &--h {
+    height: 1px;
+    animation: expand-h var(--t-long) ease-in-out forwards;
+  }
+
+  &--v {
+    width: 1px;
+    animation: expand-v var(--t-long) ease-in-out forwards;
+  }
 
   &--bottom {
-    width: calc(100vw - (var(--bg-padding) * 2) - 2px);
     bottom: var(--bg-padding);
+    left: var(--bg-padding);
   }
 
   &--top {
-    width: calc(100vw - (var(--bg-padding) * 2) - 2px);
-    rotate: 180deg;
     top: var(--bg-padding);
+    right: var(--bg-padding);
   }
 
   &--left {
-    height: calc(100vh - (var(--bg-padding) * 2) - 2px);
     left: var(--bg-padding);
-    rotate: 180deg;
+    bottom: var(--bg-padding);
   }
 
   &--right {
-    height: calc(100vh - (var(--bg-padding) * 2) - 2px);
     right: var(--bg-padding);
+    top: var(--bg-padding);
   }
 }
 
-@keyframes expand {
+@keyframes expand-h {
   0% {
-    stroke-dasharray: 4000;
-    stroke-dashoffset: 4000;
+    width: 0px;
   }
   100% {
-    stroke-dashoffset: 0;
+    width: calc(100vw - (var(--bg-padding) * 2));
   }
 }
+
+@keyframes expand-v {
+  0% {
+    height: 0px;
+  }
+  100% {
+    height: calc(100vh - (var(--bg-padding) * 2));
+  }
+}
+
+// @keyframes expand {
+//   0% {
+//     stroke-dasharray: 4000;
+//     stroke-dashoffset: 4000;
+//   }
+//   100% {
+//     stroke-dashoffset: 0;
+//   }
+// }
